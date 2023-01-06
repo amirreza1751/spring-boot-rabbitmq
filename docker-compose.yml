@@ -1,0 +1,28 @@
+version: "3"
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  server1:
+    build: ./server1/.
+    image: server1:latest
+    depends_on:
+      - rabbitmq
+    restart:
+      on-failure:3
+    ports:
+      - 8080:8080
+
+  server2:
+    build: ./server2/.
+    image: server2:latest
+    ports:
+      - 8081:8080
+    depends_on:
+      - rabbitmq
+    restart:
+      on-failure:3
+
